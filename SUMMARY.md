@@ -6,5 +6,5 @@
   * [Max Area of Island](graphs/max-area-of-island.md)
   * [Island Perimeter](graphs/island-perimeter.md)
 * [Backtracking](backtracking/README.md)
-  * [Combinations](backtracking/word-search.md)
+  * [Combinations](backtracking/combinations.md)
   * [Word Search](backtracking/word-search-1.md)
