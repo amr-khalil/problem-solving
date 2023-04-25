@@ -1,94 +1,52 @@
 ---
-description: Leetcode 79 - Medium
+description: Leetcode 77 - Medium
 ---
 
-# Word Search
+# Combinations
 
-Given an `m x n` grid of characters `board` and a string `word`, return `true` _if_ `word` _exists in the grid_.
+Given two integers `n` and `k`, return _all possible combinations of_ `k` _numbers chosen from the range_ `[1, n]`.
 
-The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+You may return the answer in **any order**.
 
 &#x20;
 
 **Example 1:**
 
-<img src="https://assets.leetcode.com/uploads/2020/11/04/word2.jpg" alt="" data-size="original">
-
-<pre><code><strong>Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
-</strong><strong>Output: true
-</strong></code></pre>
+<pre><code><strong>Input: n = 4, k = 2
+</strong><strong>Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+</strong><strong>Explanation: There are 4 choose 2 = 6 total combinations.
+</strong>Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be the same combination.
+</code></pre>
 
 **Example 2:**
 
-![](https://assets.leetcode.com/uploads/2020/11/04/word-1.jpg)
-
-<pre><code><strong>Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
-</strong><strong>Output: true
-</strong></code></pre>
-
-**Example 3:**
-
-![](https://assets.leetcode.com/uploads/2020/10/15/word3.jpg)
-
-<pre><code><strong>Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
-</strong><strong>Output: false
+<pre><code><strong>Input: n = 1, k = 1
+</strong><strong>Output: [[1]]
+</strong><strong>Explanation: There is 1 choose 1 = 1 total combination.
 </strong></code></pre>
 
 &#x20;
 
 **Constraints:**
 
-* `m == board.length`
-* `n = board[i].length`
-* `1 <= m, n <= 6`
-* `1 <= word.length <= 15`
-* `board` and `word` consists of only lowercase and uppercase English letters.
-
-&#x20;
-
-**Follow up:** Could you use search pruning to make your solution faster with a larger `board`?
+* `1 <= n <= 20`
+* `1 <= k <= n`
 
 **Solution**
 
-{% code lineNumbers="true" %}
 ```python
 class Solution:
-    def exist(self, board: List[List[str]], word: str) -> bool:
-        if not board: return False
+    def dfs(self, nums, k, index, path, res):
+        if k == 0:
+            res.append(path)
+            return
 
-        rows, cols = len(board), len(board[0])
-        visited = set()
+        for i in range(index, len(nums)):
+            self.dfs(nums, k-1, i+1, path+[nums[i]], res)
 
-        def dfs(r, c, idx=0):
-            # check if the word is full scanned
-            if len(word) == idx:
-                return True
-
-            if (r < 0 or
-                c < 0 or
-                r >= rows or
-                c >= cols or
-                word[idx] != board[r][c] or
-                (r, c) in visited):
-                return False
-
-            visited.add((r, c))
-            res = (
-                dfs(r+1, c, idx+1) or
-                dfs(r-1, c, idx+1) or
-                dfs(r, c+1, idx+1) or
-                dfs(r, c-1, idx+1)
-                )
-            visited.remove((r, c))
-            
-            return res
-        
-        for r in range(rows):
-            for c in range(cols):
-               if dfs(r, c, 0):
-                   return True
-        
-        return False
+    def combine(self, n, k):
+        res = []
+        self.dfs(range(1, n+1), k, 0, [], res)
+        return res
 ```
-{% endcode %}
 
